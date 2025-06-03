@@ -10,7 +10,6 @@ Original file is located at
 # Install Streamlit
 
 # Simpan kode berikut ke file bernama app.py
-code = """
 import streamlit as st
 import pandas as pd
 import seaborn as sns
@@ -95,4 +94,3 @@ input_df = pd.DataFrame([inputs])
 prediction = model.predict(input_df)
 st.success(f"Prediksi: {prediction[0]}")
 #print("Jalankan ini di terminal:\n!streamlit run app.py")
-"""
