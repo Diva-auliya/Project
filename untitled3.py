@@ -20,14 +20,14 @@ from sklearn.metrics import classification_report
 from sklearn.preprocessing import LabelEncoder
 
 url = 'https://github.com/Diva-auliya/Kepuasan-Pelanggan/blob/main/data_intro.csv'
-
-# Load dataset
-@st.cache_data
-def load_data():
 df = pd.read_csv(url)
-return df
+# Load dataset
+#@st.cache_data
+#def load_data():
+#df = pd.read_csv(url)
+#return df
 
-df = load_data()
+#df = load_data()
 
 # Sidebar untuk navigasi
 st.sidebar.title("Navigasi")
