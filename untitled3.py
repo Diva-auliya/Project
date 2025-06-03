@@ -19,15 +19,9 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import classification_report
 from sklearn.preprocessing import LabelEncoder
 
-url = 'https://github.com/Diva-auliya/Kepuasan-Pelanggan/blob/main/data_intro.csv'
+# URL file mentah dari GitHub (gunakan 'raw')
+url = 'https://raw.githubusercontent.com/Diva-auliya/Kepuasan-Pelanggan/main/data_intro.csv'
 df = pd.read_csv(url)
-# Load dataset
-#@st.cache_data
-#def load_data():
-#df = pd.read_csv(url)
-#return df
-
-#df = load_data()
 
 # Sidebar untuk navigasi
 st.sidebar.title("Navigasi")
@@ -35,61 +29,62 @@ page = st.sidebar.radio("Pilih Halaman:", ["📊 Dataset & Visualisasi", "🤖 P
 
 # Halaman 1: Dataset dan Visualisasi
 if page == "📊 Dataset & Visualisasi":
-st.title("📊 Dataset dan Eksplorasi")
-st.write("Berikut adalah data yang digunakan:")
-st.dataframe(df)
+    st.title("📊 Dataset dan Eksplorasi")
+    st.write("Berikut adalah data yang digunakan:")
+    st.dataframe(df)
 
-st.write("## Statistik Deskriptif")
-st.write(df.describe())
+    st.write("## Statistik Deskriptif")
+    st.write(df.describe())
 
-st.write("## Korelasi Fitur")
-fig, ax = plt.subplots(figsize=(10, 6))
-sns.heatmap(df.corr(numeric_only=True), annot=True, cmap="coolwarm", ax=ax)
-st.pyplot(fig)
+    st.write("## Korelasi Fitur")
+    fig, ax = plt.subplots(figsize=(10, 6))
+    sns.heatmap(df.corr(numeric_only=True), annot=True, cmap="coolwarm", ax=ax)
+    st.pyplot(fig)
 
 # Halaman 2: Pelatihan Model
 elif page == "🤖 Pelatihan Model":
-st.title("🤖 Pelatihan Model")
+    st.title("🤖 Pelatihan Model")
 
-target_column = st.selectbox("Pilih kolom target:", df.columns)
-features = [col for col in df.columns if col != target_column]
+    target_column = st.selectbox("Pilih kolom target:", df.columns)
+    features = [col for col in df.columns if col != target_column]
 
-X = df[features]
-y = df[target_column]
+    X = df[features]
+    y = df[target_column]
 
-# Encode jika y kategori
-if y.dtype == 'object':
-le = LabelEncoder()
-y = le.fit_transform(y)
+    # Encode jika y kategori
+    if y.dtype == 'object':
+        le = LabelEncoder()
+        y = le.fit_transform(y)
 
-# Bagi data
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+    # Bagi data
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
-# Model
-model = RandomForestClassifier()
-model.fit(X_train, y_train)
+    # Model
+    model = RandomForestClassifier()
+    model.fit(X_train, y_train)
 
-y_pred = model.predict(X_test)
+    y_pred = model.predict(X_test)
 
-st.subheader("Evaluasi Model")
-st.text(classification_report(y_test, y_pred))
+    st.subheader("Evaluasi Model")
+    st.text(classification_report(y_test, y_pred))
 
 # Halaman 3: Form Prediksi
 elif page == "🔍 Prediksi":
-st.title("🔍 Prediksi")
-st.write("Masukkan nilai fitur untuk prediksi:")
+    st.title("🔍 Prediksi")
+    st.write("Masukkan nilai fitur untuk prediksi:")
 
-inputs = {}
-for col in df.columns[:-1]:  # Asumsikan kolom terakhir adalah target
-dtype = df[col].dtype
-if dtype == 'object':
-val = st.selectbox(f"{col}:", df[col].unique())
-else:
-val = st.number_input(f"{col}:", float(df[col].min()), float(df[col].max()))
-inputs[col] = val
+    inputs = {}
+    for col in df.columns[:-1]:  # Asumsikan kolom terakhir adalah target
+        dtype = df[col].dtype
+        if dtype == 'object':
+            val = st.selectbox(f"{col}:", df[col].unique())
+        else:
+            val = st.number_input(f"{col}:", float(df[col].min()), float(df[col].max()))
+        inputs[col] = val
 
-if st.button("Prediksi"):
-input_df = pd.DataFrame([inputs])
-prediction = model.predict(input_df)
-st.success(f"Prediksi: {prediction[0]}")
+    if st.button("Prediksi"):
+        input_df = pd.DataFrame([inputs])
+        prediction = model.predict(input_df)
+        st.success(f"Prediksi: {prediction[0]}")
+
 #print("Jalankan ini di terminal:\n!streamlit run app.py")
