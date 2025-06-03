@@ -94,5 +94,4 @@ if st.button("Prediksi"):
 input_df = pd.DataFrame([inputs])
 prediction = model.predict(input_df)
 st.success(f"Prediksi: {prediction[0]}")
-"""
 #print("Jalankan ini di terminal:\n!streamlit run app.py")
