@@ -20,7 +20,6 @@ from sklearn.metrics import classification_report
 from sklearn.preprocessing import LabelEncoder
 
 url = 'https://github.com/Diva-auliya/Kepuasan-Pelanggan/blob/main/data_intro.csv'
-df = pd.read_csv(url)
 
 # Load dataset
 @st.cache_data
