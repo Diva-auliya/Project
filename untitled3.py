@@ -37,9 +37,13 @@ if page == "📊 Dataset & Visualisasi":
     st.write(df.describe())
 
     st.write("## Korelasi Fitur")
-    fig, ax = plt.subplots(figsize=(10, 6))
-    sns.heatmap(df.corr(numeric_only=True), annot=True, cmap="coolwarm", ax=ax)
-    st.pyplot(fig)
+    corr = df.corr(numeric_only=True)
+    if corr.empty or corr.isnull().values.all():
+        st.warning("Tidak dapat menampilkan heatmap karena tidak ada data numerik atau semua korelasi bernilai NaN.")
+    else:
+        fig, ax = plt.subplots(figsize=(10, 6))
+        sns.heatmap(corr, annot=True, cmap="coolwarm", ax=ax)
+        st.pyplot(fig)
 
 # Halaman 2: Pelatihan Model
 elif page == "🤖 Pelatihan Model":
